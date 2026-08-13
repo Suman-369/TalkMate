@@ -1,4 +1,4 @@
-@import url('./styles/theme.css');
+@import url("./styles/theme.css");
 
 * {
   box-sizing: border-box;
@@ -91,7 +91,9 @@ form.auth-form input {
   border-radius: var(--radius-sm);
   background: var(--color-bg-alt);
   color: var(--color-text);
-  transition: border-color var(--transition-fast), background var(--transition-fast);
+  transition:
+    border-color var(--transition-fast),
+    background var(--transition-fast);
 }
 
 form.auth-form input:focus {
@@ -144,7 +146,9 @@ button.primary-btn {
   align-items: center;
   justify-content: center;
   gap: var(--space-2);
-  transition: background var(--transition-fast), box-shadow var(--transition-fast);
+  transition:
+    background var(--transition-fast),
+    box-shadow var(--transition-fast);
 }
 
 button.primary-btn:hover {
@@ -161,7 +165,7 @@ button.primary-btn:active {
 }
 
 button.primary-btn:disabled {
-  opacity: .6;
+  opacity: 0.6;
   cursor: not-allowed;
 }
 
@@ -179,12 +183,68 @@ button.primary-btn:disabled {
 
 /* Smooth theme transition */
 html {
-  transition: background-color .3s, color .3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s;
 }
 
 body,
 .auth-card,
 input,
 button {
-  transition: background-color .3s, color .3s, border-color .3s;
+  transition:
+    background-color 0.3s,
+    color 0.3s,
+    border-color 0.3s;
+}
+
+/* Error message styling */
+.error-message {
+  background-color: #fee;
+  border: 1px solid #fcc;
+  border-radius: var(--radius-sm);
+  padding: var(--space-3) var(--space-4);
+  color: #c33;
+  font-size: var(--text-sm);
+  margin-bottom: var(--space-4);
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Secondary button styling */
+button.secondary-btn {
+  appearance: none;
+  cursor: pointer;
+  border: 1px solid var(--color-border);
+  background: var(--color-bg-alt);
+  color: var(--color-text);
+  font: inherit;
+  font-weight: var(--font-weight-medium);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  transition: all var(--transition-fast);
+}
+
+button.secondary-btn:hover {
+  background: var(--color-border);
+  border-color: var(--color-text-muted);
+}
+
+button.secondary-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }

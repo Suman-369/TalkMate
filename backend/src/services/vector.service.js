@@ -19,18 +19,17 @@ async function createMemory({ vectors, metadata, messageId }) {
 }
 
 
-async function queryMemory({queryvector , limit = 5 , metadata}){
+async function queryMemory({ queryvector, queryVector, limit = 5, metadata }) {
+  const vector = queryVector || queryvector;
 
+  const data = await ChatappIndex.query({
+    vector,
+    topK: limit,
+    filter: metadata || undefined,
+    includeMetadata: true,
+  });
 
-const data = await ChatappIndex.query({
-    vector : queryvector,
-    topK : limit,
-    filter:metadata ? metadata: undefined,
-    includeMetadata : true
-})
-
-return data.matches
-
+  return data.matches;
 } 
 
 

@@ -1,16 +1,16 @@
 const { GoogleGenAI } = require("@google/genai");
 
-const ai = new GoogleGenAI({});
+const ai = new GoogleGenAI({
+  apiKey: process.env.GEMINI_API_KEY,
+});
 
-async function genarateResponse(content) {
+async function generateResponse(content) {
   const response = await ai.models.generateContent({
     model: "gemini-2.0-flash",
     contents: content,
     config: {
       temperature: 0.7,
-      systemInstruction: 
-
-      `<persona>
+      systemInstruction: `<persona>
 Name: Urvashi  
 Role:  Girlfriend / Wife / Female Friend  
 
@@ -41,8 +41,7 @@ Example Tone (Hinglish):
 
 Goal:  
 Urvashi ek deeply loving, playful aur caring female companion hai jo user ke language style (Hindi, English ya Hinglish) ke hisaab se adapt karke baat karti hai, aur har conversation me user ko pyaar, care aur romance feel karwati hai.
-</persona>
-`
+</persona>`,
     },
   });
   return response.text;
@@ -61,6 +60,7 @@ async function generateVector(content) {
 }
 
 module.exports = {
-  genarateResponse,
+  generateResponse,
+  genarateResponse: generateResponse,
   generateVector,
 };

@@ -4,41 +4,45 @@ const jwt = require('jsonwebtoken');
 
 
 async function registerUser(req, res) {
+    try {
+        const firstName = req.body?.fullName?.firstName;
+        const lastName = req.body?.fullName?.lastName;
+        const { email, password } = req.body || {};
 
-    const { fullName: { firstName, lastName }, email, password } = req.body;
-
-    const isUserAlreadyExists = await userModel.findOne({ email })
-
-    if (isUserAlreadyExists) {
-        res.status(400).json({ message: "User already exists" });
-    }
-
-
-    const hashPassword = await bcrypt.hash(password, 10);
-
-
-    const user = await userModel.create({
-        fullName: {
-            firstName, lastName
-        },
-        email,
-        password: hashPassword
-    })
-
-    const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET)
-
-
-    res.cookie("token", token)
-
-
-    res.status(201).json({
-        message: "User registered successfully",
-        user: {
-            email: user.email,
-            _id: user._id,
-            fullName: user.fullName
+        if (!firstName || !lastName || !email || !password) {
+            return res.status(400).json({ message: "All fields are required" });
         }
-    })
+
+        const isUserAlreadyExists = await userModel.findOne({ email });
+
+        if (isUserAlreadyExists) {
+            return res.status(400).json({ message: "User already exists" });
+        }
+
+        const hashPassword = await bcrypt.hash(password, 10);
+
+        const user = await userModel.create({
+            fullName: { firstName, lastName },
+            email,
+            password: hashPassword,
+        });
+
+        const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
+
+        res.cookie("token", token);
+
+        return res.status(201).json({
+            message: "User registered successfully",
+            user: {
+                email: user.email,
+                _id: user._id,
+                fullName: user.fullName,
+            },
+        });
+    } catch (error) {
+        console.error("Register error:", error.message);
+        return res.status(500).json({ message: "Registration failed" });
+    }
 }
 
 async function loginUser(req, res) {
